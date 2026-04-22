@@ -46,38 +46,38 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
         {/* 头部 */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mb-4 shadow-lg">
-            <Dog size={48} className="text-white" />
+          <div className="inline-flex items-center justify-center w-28 h-28 bg-white/30 backdrop-blur-md rounded-3xl mb-6 shadow-2xl border-4 border-white/50">
+            <Dog size={56} className="text-white drop-shadow-lg" />
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-5xl font-black text-white mb-3 drop-shadow-2xl">
             小狗成长记
           </h1>
-          <p className="text-gray-600">记录每一个温暖的瞬间 🐾</p>
+          <p className="text-white/90 text-lg drop-shadow-md">记录每一个温暖的瞬间 🐾</p>
         </div>
 
         {/* 宠物卡片 */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6 border border-purple-100 hover:shadow-2xl transition-all duration-300">
-          <div className="flex items-center space-x-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-orange-400 via-pink-400 to-purple-400 rounded-full flex items-center justify-center shadow-lg">
-              <Dog size={40} className="text-white" />
+        <div className="glass rounded-3xl shadow-2xl p-8 mb-6 border-2 border-white/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:scale-[1.02] transition-all duration-300">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <div className="w-28 h-28 bg-gradient-to-br from-orange-400 via-pink-400 to-purple-500 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/50">
+              <Dog size={56} className="text-white" />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-800">
+              <h2 className="text-3xl font-black text-gray-800 mb-2">
                 {pet ? pet.name : '我的小狗'}
               </h2>
-              <p className="text-gray-500 text-sm">
-                {pet ? `${pet.breed} · ${pet.gender === 'male' ? '男孩 🐕' : '女孩 🐕'}` : '点击添加你的宠物信息'}
+              <p className="text-gray-600 text-base">
+                {pet ? `${pet.breed} · ${pet.gender === 'male' ? '男孩 🐕' : '女孩 🐕'}` : '点击下方按钮添加你的宠物信息'}
               </p>
             </div>
             <button
               onClick={openModal}
-              className="text-blue-500 text-sm hover:text-blue-600 bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 transition-colors"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-2xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-bold text-lg"
             >
-              {pet ? '编辑' : '添加'}
+              {pet ? '✏️ 编辑信息' : '➕ 添加宠物'}
             </button>
           </div>
         </div>
@@ -86,46 +86,53 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-4">
           <div
             onClick={() => navigate('/timeline')}
-            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(59,130,246,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
-            <div className="text-4xl mb-2">📝</div>
-            <h3 className="font-semibold text-white">记录日常</h3>
-            <p className="text-xs text-blue-100 mt-1">添加成长事件</p>
+            <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">📝</div>
+            <h3 className="font-black text-gray-800 text-lg">记录日常</h3>
+            <p className="text-xs text-gray-600 mt-2">添加成长事件</p>
           </div>
 
           <div
             onClick={() => navigate('/health')}
-            className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(34,197,94,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
-            <div className="text-4xl mb-2">💉</div>
-            <h3 className="font-semibold text-white">健康管理</h3>
-            <p className="text-xs text-green-100 mt-1">疫苗和体检</p>
+            <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">💉</div>
+            <h3 className="font-black text-gray-800 text-lg">健康管理</h3>
+            <p className="text-xs text-gray-600 mt-2">疫苗和体检</p>
           </div>
 
           <div
             onClick={() => navigate('/timeline')}
-            className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(168,85,247,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
-            <div className="text-4xl mb-2">🐾</div>
-            <h3 className="font-semibold text-white">成长轨迹</h3>
-            <p className="text-xs text-purple-100 mt-1">查看时间线</p>
+            <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">🐾</div>
+            <h3 className="font-black text-gray-800 text-lg">成长轨迹</h3>
+            <p className="text-xs text-gray-600 mt-2">查看时间线</p>
           </div>
 
           <div
             onClick={() => navigate('/chat')}
-            className="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(249,115,22,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
-            <div className="text-4xl mb-2">💬</div>
-            <h3 className="font-semibold text-white">AI助手</h3>
-            <p className="text-xs text-orange-100 mt-1">宠物知识问答</p>
+            <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">💬</div>
+            <h3 className="font-black text-gray-800 text-lg">AI助手</h3>
+            <p className="text-xs text-gray-600 mt-2">宠物知识问答</p>
           </div>
         </div>
       </div>
 
       {/* 添加/编辑宠物弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md my-8">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 p-4 overflow-y-auto"
+          onClick={() => setShowModal(false)}
+        >
+          <div className="min-h-screen flex items-center justify-center py-8">
+            <div
+              className="bg-white rounded-2xl p-6 w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               {pet ? '编辑宠物信息' : '添加宠物信息'}
             </h2>
@@ -214,6 +221,7 @@ export default function HomePage() {
               </div>
             </form>
           </div>
+        </div>
         </div>
       )}
     </div>

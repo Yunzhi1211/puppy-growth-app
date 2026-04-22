@@ -35,19 +35,19 @@ export default function ChatPage() {
     setIsLoading(true);
 
     try {
-      // 使用免费的AI API
-      const response = await fetch('https://api.deepseek.com/chat/completions', {
+      // 使用 MiniMax 2.5 AI API
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer sk-or-v1-c0e1e8e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0',
+          'Authorization': 'Bearer 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',
         },
         body: JSON.stringify({
-          model: 'deepseek-chat',
+          model: 'minimax2.5',
           messages: [
             {
               role: 'system',
-              content: '你是一个专业的宠物狗护理专家，擅长回答关于狗狗饲养、健康、训练等问题。请用友好、温暖的语气回答，并适当使用emoji。',
+              content: '你是一个专业的宠物狗护理专家，擅长回答关于狗狗饲养、健康、训练等问题。请用友好、温暖的语气回答，并适当使用emoji。回答要简洁实用，每次回答控制在200字以内。',
             },
             ...messages.map(m => ({ role: m.role, content: m.content })),
             { role: 'user', content: input },
@@ -109,17 +109,17 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 pb-20 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 pb-20 flex flex-col">
       <div className="max-w-md mx-auto w-full flex-1 flex flex-col">
         {/* 头部 */}
-        <div className="bg-gradient-to-r from-orange-500 to-red-500 border-b px-4 py-4 shadow-lg">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-              <Dog size={24} className="text-orange-500" />
+        <div className="glass border-b-2 border-white/30 px-4 py-5 shadow-2xl">
+          <div className="flex items-center space-x-4">
+            <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-2xl border-2 border-white/50">
+              <Dog size={28} className="text-orange-500" />
             </div>
             <div>
-              <h1 className="font-semibold text-white text-lg">小狗助手</h1>
-              <p className="text-xs text-orange-100">在线 · 随时为你解答 🐕</p>
+              <h1 className="font-black text-white text-xl drop-shadow-lg">小狗助手</h1>
+              <p className="text-xs text-white/90 drop-shadow-md">在线 · 随时为你解答 🐕</p>
             </div>
           </div>
         </div>
@@ -132,23 +132,23 @@ export default function ChatPage() {
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 shadow-md ${
+                className={`max-w-[85%] rounded-3xl px-5 py-4 shadow-2xl border-2 ${
                   msg.role === 'user'
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-                    : 'bg-white text-gray-800 border border-orange-100'
+                    ? 'bg-white/90 backdrop-blur-md text-gray-800 border-white/50'
+                    : 'glass text-gray-800 border-white/30'
                 }`}
               >
-                <div className="whitespace-pre-wrap">{msg.content}</div>
+                <div className="whitespace-pre-wrap leading-relaxed">{msg.content}</div>
               </div>
             </div>
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-white rounded-2xl px-4 py-3 shadow-md border border-orange-100">
+              <div className="glass rounded-3xl px-5 py-4 shadow-2xl border-2 border-white/30">
                 <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-3 h-3 bg-white rounded-full animate-bounce"></div>
+                  <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                 </div>
               </div>
             </div>
@@ -156,8 +156,8 @@ export default function ChatPage() {
         </div>
 
         {/* 输入框 */}
-        <div className="bg-white border-t px-4 py-3 shadow-lg">
-          <div className="flex items-center space-x-2">
+        <div className="glass border-t-2 border-white/30 px-4 py-4 shadow-2xl">
+          <div className="flex items-center space-x-3">
             <input
               type="text"
               value={input}
@@ -165,14 +165,14 @@ export default function ChatPage() {
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
               placeholder="问我任何关于小狗的问题..."
               disabled={isLoading}
-              className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:border-orange-500 disabled:bg-gray-100"
+              className="flex-1 glass border-2 border-white/30 rounded-full px-5 py-3 focus:outline-none focus:border-white/60 disabled:opacity-50 text-gray-800 placeholder-gray-600 font-medium"
             />
             <button
               onClick={handleSend}
               disabled={isLoading}
-              className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full p-2 hover:shadow-lg disabled:opacity-50 transition-all duration-300"
+              className="bg-white text-orange-500 rounded-full p-3 hover:shadow-2xl disabled:opacity-50 transition-all duration-300 hover:scale-110 border-2 border-white/50"
             >
-              <Send size={20} />
+              <Send size={24} />
             </button>
           </div>
         </div>

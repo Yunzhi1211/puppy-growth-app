@@ -67,17 +67,17 @@ export default function HealthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-400 to-purple-400 pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-6">健康管理</h1>
+        <h1 className="text-4xl font-black text-white drop-shadow-2xl mb-6">健康管理</h1>
 
         {/* 健康类型 */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           {['vaccine', 'checkup', 'medication', 'deworming'].map((type) => (
-            <div key={type} className="bg-white rounded-xl shadow-lg p-4 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 border border-blue-100">
+            <div key={type} className="glass rounded-3xl shadow-2xl p-6 text-center hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:scale-105 transition-all duration-300 border-2 border-white/30">
               {getTypeIcon(type)}
-              <h3 className="font-semibold text-gray-800">{getTypeName(type)}</h3>
-              <p className="text-xs text-gray-500 mt-1">
+              <h3 className="font-black text-gray-800 text-base">{getTypeName(type)}</h3>
+              <p className="text-xs text-gray-600 mt-2 font-semibold">
                 {getRecordsByType(type).length} 条记录
               </p>
             </div>
@@ -87,27 +87,27 @@ export default function HealthPage() {
         {/* 添加按钮 */}
         <button
           onClick={() => setShowModal(true)}
-          className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 mb-6"
+          className="w-full glass rounded-3xl py-4 font-black text-gray-800 text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 mb-6 border-2 border-white/50"
         >
           ➕ 添加健康记录
         </button>
 
         {/* 记录列表 */}
         {records.length > 0 && (
-          <div className="space-y-3">
-            <h2 className="font-semibold text-gray-800 mb-3">最近记录</h2>
+          <div className="space-y-4">
+            <h2 className="font-black text-white text-xl drop-shadow-lg mb-4">最近记录</h2>
             {records.map((record) => (
-              <div key={record.id} className="bg-white rounded-xl shadow-lg p-4 hover:shadow-xl transition-shadow border border-green-100">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-gray-800">{record.title}</h3>
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">{getTypeName(record.type)}</span>
+              <div key={record.id} className="glass rounded-3xl shadow-2xl p-6 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:scale-[1.02] transition-all duration-300 border-2 border-white/30">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="font-black text-gray-800 text-lg">{record.title}</h3>
+                  <span className="text-xs bg-white/50 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full font-bold border border-white/30">{getTypeName(record.type)}</span>
                 </div>
-                <p className="text-sm text-gray-600 mb-1">📅 日期: {record.date}</p>
+                <p className="text-sm text-gray-700 mb-2 font-semibold">📅 日期: {record.date}</p>
                 {record.nextDate && (
-                  <p className="text-sm text-blue-600">⏰ 下次: {record.nextDate}</p>
+                  <p className="text-sm text-blue-700 font-semibold">⏰ 下次: {record.nextDate}</p>
                 )}
                 {record.notes && (
-                  <p className="text-sm text-gray-500 mt-2 bg-gray-50 p-2 rounded">{record.notes}</p>
+                  <p className="text-sm text-gray-700 mt-3 bg-white/30 backdrop-blur-sm p-3 rounded-2xl border border-white/30">{record.notes}</p>
                 )}
               </div>
             ))}
@@ -117,8 +117,15 @@ export default function HealthPage() {
 
       {/* 添加记录弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md my-8">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 p-4 overflow-y-auto"
+          onClick={() => setShowModal(false)}
+        >
+          <div className="min-h-screen flex items-center justify-center py-8">
+            <div
+              className="bg-white rounded-2xl p-6 w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
             <h2 className="text-xl font-bold text-gray-800 mb-4">添加健康记录</h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -202,6 +209,7 @@ export default function HealthPage() {
               </div>
             </form>
           </div>
+        </div>
         </div>
       )}
     </div>

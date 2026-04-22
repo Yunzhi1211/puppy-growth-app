@@ -1,5 +1,6 @@
 import { PawPrint, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { GrowthEvent } from '../types';
 import { getEvents, saveEvent } from '../utils/storage';
 
@@ -90,7 +91,7 @@ export default function TimelinePage() {
 
         {/* 爪印动画 */}
         {showPawAnimation && (
-          <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+          <div className="pointer-events-none fixed inset-0 z-[90] flex items-center justify-center">
             <div className="animate-bounce">
               <PawPrint size={200} className="text-white opacity-90 drop-shadow-2xl" strokeWidth={1.5} />
             </div>
@@ -99,15 +100,14 @@ export default function TimelinePage() {
       </div>
 
       {/* 添加事件弹窗 */}
-      {showModal && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+      {showModal &&
+        createPortal(
+          <div className="modal-backdrop" role="presentation">
+            <div className="modal-align" onClick={() => setShowModal(false)}>
+              <div
+                className="relative w-full max-w-md max-h-[min(90dvh,720px)] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
             <h2 className="text-xl font-bold text-gray-800 mb-4">添加成长记录</h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -180,9 +180,11 @@ export default function TimelinePage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

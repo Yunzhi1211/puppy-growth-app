@@ -1,5 +1,6 @@
 import { Heart, Syringe, Stethoscope, Pill } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { HealthRecord } from '../types';
 import { getHealthRecords, saveHealthRecord } from '../utils/storage';
 
@@ -116,15 +117,14 @@ export default function HealthPage() {
       </div>
 
       {/* 添加记录弹窗 */}
-      {showModal && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+      {showModal &&
+        createPortal(
+          <div className="modal-backdrop" role="presentation">
+            <div className="modal-align" onClick={() => setShowModal(false)}>
+              <div
+                className="relative w-full max-w-md max-h-[min(90dvh,720px)] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
             <h2 className="text-xl font-bold text-gray-800 mb-4">添加健康记录</h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -207,9 +207,11 @@ export default function HealthPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

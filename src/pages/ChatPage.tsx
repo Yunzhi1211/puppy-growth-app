@@ -35,16 +35,9 @@ export default function ChatPage() {
     setIsLoading(true);
 
     try {
-      // 使用 MiniMax 2.5 AI API
-      console.log('Sending request to AI API...');
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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',
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'Puppy Growth App',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'minimax/minimax-01',
           messages: [
@@ -58,31 +51,56 @@ export default function ChatPage() {
         }),
       });
 
-      console.log('Response status:', response.status);
+      const raw = await response.text();
+      let data: {
+        choices?: { message?: { content?: string } }[];
+        error?: string;
+      };
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('API Error:', errorText);
+      try {
+        data = JSON.parse(raw) as typeof data;
+      } catch {
+        console.error('Chat API 非 JSON:', response.status, raw);
         throw new Error('API请求失败');
       }
 
-      const data = await response.json();
-      console.log('API Response:', data);
+      if (!response.ok) {
+        console.error('Chat API:', response.status, raw);
+        if (response.status === 500 && data?.error === 'OPENROUTER_API_KEY_MISSING') {
+          throw new Error('NO_SERVER_KEY');
+        }
+        if (response.status === 401 || response.status === 403) {
+          throw new Error('OPENROUTER_AUTH');
+        }
+        throw new Error('API请求失败');
+      }
+
+      const content = data.choices?.[0]?.message?.content;
+      if (!content) {
+        throw new Error('API请求失败');
+      }
 
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.choices[0].message.content,
+        content,
         timestamp: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, aiResponse]);
     } catch (error) {
       console.error('Chat error:', error);
-      // 如果API失败，使用本地智能回复
+      const code = error instanceof Error ? error.message : '';
+      const hint =
+        code === 'NO_SERVER_KEY'
+          ? '【提示】服务端未配置 OpenRouter。请在 Vercel：Project → Settings → Environment Variables 中新增 `OPENROUTER_API_KEY`（不要加 VITE_ 前缀），值为 https://openrouter.ai/keys 的密钥，保存后重新 Deploy。\n\n'
+          : code === 'OPENROUTER_AUTH'
+            ? '【提示】OpenRouter 拒绝访问（密钥无效或已撤销）。请在 Vercel 中核对 `OPENROUTER_API_KEY`，更新后重新部署。以下为本地参考回复：\n\n'
+            : '【提示】云端 AI 暂不可用（本地请用 `npx vercel dev` 以启用 /api）。已使用本地参考回复。\n\n';
+
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: getSmartReply(input),
+        content: hint + getSmartReply(input),
         timestamp: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, aiResponse]);

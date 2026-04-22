@@ -1,6 +1,7 @@
 import { Dog, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { Pet } from '../types';
 import { getPets, getCurrentPet, savePet, deletePet, setCurrentPetId } from '../utils/storage';
 
@@ -170,16 +171,18 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 添加/编辑宠物弹窗 */}
-      {showModal && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+      {/* 添加/编辑宠物弹窗 — portal + 高于底栏 z-index，避免宽屏/层叠导致不居中 */}
+      {showModal &&
+        createPortal(
+          <div className="modal-backdrop" role="presentation">
+            <div
+              className="modal-align"
+              onClick={() => setShowModal(false)}
+            >
+              <div
+                className="relative w-full max-w-md max-h-[min(90dvh,720px)] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               {editingPet ? '编辑宠物信息' : '添加宠物信息'}
             </h2>
@@ -267,20 +270,24 @@ export default function HomePage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
 
       {/* 宠物列表弹窗 */}
-      {showPetList && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
-          onClick={() => setShowPetList(false)}
-        >
-          <div
-            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+      {showPetList &&
+        createPortal(
+          <div className="modal-backdrop" role="presentation">
+            <div
+              className="modal-align"
+              onClick={() => setShowPetList(false)}
+            >
+              <div
+                className="relative w-full max-w-md max-h-[min(90dvh,720px)] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
             <h2 className="text-xl font-bold text-gray-800 mb-4">我的宠物</h2>
             <div className="space-y-3">
               {pets.map((pet) => (
@@ -326,9 +333,11 @@ export default function HomePage() {
             >
               关闭
             </button>
-          </div>
-        </div>
-      )}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

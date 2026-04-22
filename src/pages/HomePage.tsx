@@ -46,21 +46,23 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
         {/* 头部 */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-4">
-            <Dog size={40} className="text-blue-600" />
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mb-4 shadow-lg">
+            <Dog size={48} className="text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">小狗成长记</h1>
-          <p className="text-gray-600">记录每一个温暖的瞬间</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            小狗成长记
+          </h1>
+          <p className="text-gray-600">记录每一个温暖的瞬间 🐾</p>
         </div>
 
         {/* 宠物卡片 */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6 border border-purple-100 hover:shadow-2xl transition-all duration-300">
           <div className="flex items-center space-x-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center">
+            <div className="w-20 h-20 bg-gradient-to-br from-orange-400 via-pink-400 to-purple-400 rounded-full flex items-center justify-center shadow-lg">
               <Dog size={40} className="text-white" />
             </div>
             <div className="flex-1">
@@ -68,12 +70,12 @@ export default function HomePage() {
                 {pet ? pet.name : '我的小狗'}
               </h2>
               <p className="text-gray-500 text-sm">
-                {pet ? `${pet.breed} · ${pet.gender === 'male' ? '男孩' : '女孩'}` : '点击添加你的宠物信息'}
+                {pet ? `${pet.breed} · ${pet.gender === 'male' ? '男孩 🐕' : '女孩 🐕'}` : '点击添加你的宠物信息'}
               </p>
             </div>
             <button
               onClick={openModal}
-              className="text-blue-500 text-sm hover:text-blue-600"
+              className="text-blue-500 text-sm hover:text-blue-600 bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 transition-colors"
             >
               {pet ? '编辑' : '添加'}
             </button>
@@ -84,46 +86,46 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-4">
           <div
             onClick={() => navigate('/timeline')}
-            className="bg-white rounded-xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer"
+            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
           >
-            <div className="text-3xl mb-2">📝</div>
-            <h3 className="font-semibold text-gray-800">记录日常</h3>
-            <p className="text-xs text-gray-500 mt-1">添加成长事件</p>
+            <div className="text-4xl mb-2">📝</div>
+            <h3 className="font-semibold text-white">记录日常</h3>
+            <p className="text-xs text-blue-100 mt-1">添加成长事件</p>
           </div>
 
           <div
             onClick={() => navigate('/health')}
-            className="bg-white rounded-xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer"
+            className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
           >
-            <div className="text-3xl mb-2">💉</div>
-            <h3 className="font-semibold text-gray-800">健康管理</h3>
-            <p className="text-xs text-gray-500 mt-1">疫苗和体检</p>
+            <div className="text-4xl mb-2">💉</div>
+            <h3 className="font-semibold text-white">健康管理</h3>
+            <p className="text-xs text-green-100 mt-1">疫苗和体检</p>
           </div>
 
           <div
             onClick={() => navigate('/timeline')}
-            className="bg-white rounded-xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer"
+            className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
           >
-            <div className="text-3xl mb-2">🐾</div>
-            <h3 className="font-semibold text-gray-800">成长轨迹</h3>
-            <p className="text-xs text-gray-500 mt-1">查看时间线</p>
+            <div className="text-4xl mb-2">🐾</div>
+            <h3 className="font-semibold text-white">成长轨迹</h3>
+            <p className="text-xs text-purple-100 mt-1">查看时间线</p>
           </div>
 
           <div
             onClick={() => navigate('/chat')}
-            className="bg-white rounded-xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer"
+            className="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
           >
-            <div className="text-3xl mb-2">💬</div>
-            <h3 className="font-semibold text-gray-800">AI助手</h3>
-            <p className="text-xs text-gray-500 mt-1">宠物知识问答</p>
+            <div className="text-4xl mb-2">💬</div>
+            <h3 className="font-semibold text-white">AI助手</h3>
+            <p className="text-xs text-orange-100 mt-1">宠物知识问答</p>
           </div>
         </div>
       </div>
 
       {/* 添加/编辑宠物弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md my-8">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               {pet ? '编辑宠物信息' : '添加宠物信息'}
             </h2>

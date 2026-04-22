@@ -67,14 +67,14 @@ export default function HealthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">健康管理</h1>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-6">健康管理</h1>
 
         {/* 健康类型 */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           {['vaccine', 'checkup', 'medication', 'deworming'].map((type) => (
-            <div key={type} className="bg-white rounded-lg shadow p-4 text-center">
+            <div key={type} className="bg-white rounded-xl shadow-lg p-4 text-center hover:shadow-xl hover:scale-105 transition-all duration-300 border border-blue-100">
               {getTypeIcon(type)}
               <h3 className="font-semibold text-gray-800">{getTypeName(type)}</h3>
               <p className="text-xs text-gray-500 mt-1">
@@ -87,9 +87,9 @@ export default function HealthPage() {
         {/* 添加按钮 */}
         <button
           onClick={() => setShowModal(true)}
-          className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors mb-6"
+          className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 mb-6"
         >
-          添加健康记录
+          ➕ 添加健康记录
         </button>
 
         {/* 记录列表 */}
@@ -97,17 +97,17 @@ export default function HealthPage() {
           <div className="space-y-3">
             <h2 className="font-semibold text-gray-800 mb-3">最近记录</h2>
             {records.map((record) => (
-              <div key={record.id} className="bg-white rounded-lg shadow p-4">
+              <div key={record.id} className="bg-white rounded-xl shadow-lg p-4 hover:shadow-xl transition-shadow border border-green-100">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="font-semibold text-gray-800">{record.title}</h3>
-                  <span className="text-xs text-gray-500">{getTypeName(record.type)}</span>
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">{getTypeName(record.type)}</span>
                 </div>
-                <p className="text-sm text-gray-600 mb-1">日期: {record.date}</p>
+                <p className="text-sm text-gray-600 mb-1">📅 日期: {record.date}</p>
                 {record.nextDate && (
-                  <p className="text-sm text-blue-600">下次: {record.nextDate}</p>
+                  <p className="text-sm text-blue-600">⏰ 下次: {record.nextDate}</p>
                 )}
                 {record.notes && (
-                  <p className="text-sm text-gray-500 mt-2">{record.notes}</p>
+                  <p className="text-sm text-gray-500 mt-2 bg-gray-50 p-2 rounded">{record.notes}</p>
                 )}
               </div>
             ))}
@@ -117,8 +117,8 @@ export default function HealthPage() {
 
       {/* 添加记录弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md my-8">
             <h2 className="text-xl font-bold text-gray-800 mb-4">添加健康记录</h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">

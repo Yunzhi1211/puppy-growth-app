@@ -6,6 +6,7 @@ import { getEvents, saveEvent } from '../utils/storage';
 export default function TimelinePage() {
   const [events, setEvents] = useState<GrowthEvent[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [showPawAnimation, setShowPawAnimation] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -32,6 +33,11 @@ export default function TimelinePage() {
     saveEvent(newEvent);
     loadEvents();
     setShowModal(false);
+
+    // 显示爪印动画
+    setShowPawAnimation(true);
+    setTimeout(() => setShowPawAnimation(false), 2000);
+
     setFormData({
       title: '',
       description: '',
@@ -41,13 +47,13 @@ export default function TimelinePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">成长轨迹</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">成长轨迹</h1>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition-colors"
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full p-3 hover:shadow-lg hover:scale-110 transition-all duration-300"
           >
             <Plus size={24} />
           </button>
@@ -59,32 +65,41 @@ export default function TimelinePage() {
             events.map((event, index) => (
               <div key={event.id} className="mb-8 flex">
                 <div className="flex flex-col items-center mr-4">
-                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
                     <PawPrint size={24} className="text-white" />
                   </div>
                   {index < events.length - 1 && (
-                    <div className="w-1 h-full bg-blue-200 mt-2"></div>
+                    <div className="w-1 h-full bg-gradient-to-b from-purple-300 to-pink-300 mt-2"></div>
                   )}
                 </div>
-                <div className="bg-white rounded-lg shadow p-4 flex-1">
-                  <div className="text-sm text-gray-500 mb-1">{event.date}</div>
+                <div className="bg-white rounded-xl shadow-lg p-4 flex-1 hover:shadow-xl transition-shadow border border-purple-100">
+                  <div className="text-sm text-purple-600 font-medium mb-1">{event.date}</div>
                   <h3 className="font-semibold text-gray-800 mb-2">{event.title}</h3>
                   <p className="text-gray-600 text-sm">{event.description}</p>
                 </div>
               </div>
             ))
           ) : (
-            <div className="text-center text-gray-400 py-12">
-              还没有成长记录，点击右上角添加吧！
+            <div className="text-center text-gray-400 py-12 bg-white rounded-xl shadow">
+              还没有成长记录，点击右上角添加吧！🐾
             </div>
           )}
         </div>
+
+        {/* 爪印动画 */}
+        {showPawAnimation && (
+          <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+            <div className="animate-bounce">
+              <PawPrint size={80} className="text-purple-500 opacity-80" />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 添加事件弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md my-8">
             <h2 className="text-xl font-bold text-gray-800 mb-4">添加成长记录</h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">

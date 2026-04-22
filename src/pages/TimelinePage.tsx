@@ -47,7 +47,7 @@ export default function TimelinePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-black text-white drop-shadow-2xl">成长轨迹</h1>
@@ -92,7 +92,7 @@ export default function TimelinePage() {
         {showPawAnimation && (
           <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
             <div className="animate-bounce">
-              <PawPrint size={80} className="text-purple-500 opacity-80" />
+              <PawPrint size={200} className="text-white opacity-90 drop-shadow-2xl" strokeWidth={1.5} />
             </div>
           </div>
         )}
@@ -101,14 +101,13 @@ export default function TimelinePage() {
       {/* 添加事件弹窗 */}
       {showModal && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 p-4 overflow-y-auto"
+          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
           onClick={() => setShowModal(false)}
         >
-          <div className="min-h-screen flex items-center justify-center py-8">
-            <div
-              className="bg-white rounded-2xl p-6 w-full max-w-md"
-              onClick={(e) => e.stopPropagation()}
-            >
+          <div
+            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="text-xl font-bold text-gray-800 mb-4">添加成长记录</h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -121,7 +120,7 @@ export default function TimelinePage() {
                     required
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                   />
                 </div>
                 <div>
@@ -133,7 +132,7 @@ export default function TimelinePage() {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                     placeholder="例如：第一次散步"
                   />
                 </div>
@@ -145,7 +144,7 @@ export default function TimelinePage() {
                     required
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 h-24"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500 h-24"
                     placeholder="记录这个特别的时刻..."
                   />
                 </div>
@@ -156,7 +155,7 @@ export default function TimelinePage() {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                   >
                     <option value="daily">日常</option>
                     <option value="milestone">里程碑</option>
@@ -169,20 +168,19 @@ export default function TimelinePage() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                  className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-3xl font-semibold hover:bg-gray-300 transition-colors"
                 >
                   取消
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+                  className="flex-1 bg-gray-800 text-white py-2 rounded-3xl font-semibold hover:bg-gray-700 transition-colors"
                 >
                   保存
                 </button>
               </div>
             </form>
           </div>
-        </div>
         </div>
       )}
     </div>

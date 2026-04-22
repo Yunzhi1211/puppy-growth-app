@@ -46,7 +46,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
         {/* 头部 */}
         <div className="text-center mb-8">
@@ -60,9 +60,9 @@ export default function HomePage() {
         </div>
 
         {/* 宠物卡片 */}
-        <div className="glass rounded-3xl shadow-2xl p-8 mb-6 border-2 border-white/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:scale-[1.02] transition-all duration-300">
+        <div className="glass rounded-3xl shadow-2xl p-8 mb-6 border-2 border-white/30 hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] hover:scale-[1.02] transition-all duration-300">
           <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-28 h-28 bg-gradient-to-br from-orange-400 via-pink-400 to-purple-500 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/50">
+            <div className="w-28 h-28 bg-gradient-to-br from-gray-600 via-gray-500 to-gray-400 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/50">
               <Dog size={56} className="text-white" />
             </div>
             <div className="flex-1">
@@ -75,7 +75,7 @@ export default function HomePage() {
             </div>
             <button
               onClick={openModal}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-2xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-bold text-lg"
+              className="w-full bg-gradient-to-r from-gray-700 to-gray-600 text-white px-6 py-3 rounded-3xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-bold text-lg"
             >
               {pet ? '✏️ 编辑信息' : '➕ 添加宠物'}
             </button>
@@ -86,7 +86,7 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-4">
           <div
             onClick={() => navigate('/timeline')}
-            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(59,130,246,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
             <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">📝</div>
             <h3 className="font-black text-gray-800 text-lg">记录日常</h3>
@@ -95,7 +95,7 @@ export default function HomePage() {
 
           <div
             onClick={() => navigate('/health')}
-            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(34,197,94,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
             <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">💉</div>
             <h3 className="font-black text-gray-800 text-lg">健康管理</h3>
@@ -104,7 +104,7 @@ export default function HomePage() {
 
           <div
             onClick={() => navigate('/timeline')}
-            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(168,85,247,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
             <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">🐾</div>
             <h3 className="font-black text-gray-800 text-lg">成长轨迹</h3>
@@ -113,7 +113,7 @@ export default function HomePage() {
 
           <div
             onClick={() => navigate('/chat')}
-            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(249,115,22,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
+            className="glass rounded-3xl shadow-2xl p-8 text-center hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] hover:scale-110 transition-all duration-300 cursor-pointer border-2 border-white/30 group"
           >
             <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">💬</div>
             <h3 className="font-black text-gray-800 text-lg">AI助手</h3>
@@ -125,14 +125,13 @@ export default function HomePage() {
       {/* 添加/编辑宠物弹窗 */}
       {showModal && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 p-4 overflow-y-auto"
+          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
           onClick={() => setShowModal(false)}
         >
-          <div className="min-h-screen flex items-center justify-center py-8">
-            <div
-              className="bg-white rounded-2xl p-6 w-full max-w-md"
-              onClick={(e) => e.stopPropagation()}
-            >
+          <div
+            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               {pet ? '编辑宠物信息' : '添加宠物信息'}
             </h2>
@@ -147,7 +146,7 @@ export default function HomePage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                     placeholder="给你的小狗起个名字"
                   />
                 </div>
@@ -160,7 +159,7 @@ export default function HomePage() {
                     required
                     value={formData.breed}
                     onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                     placeholder="例如：金毛、柯基"
                   />
                 </div>
@@ -173,7 +172,7 @@ export default function HomePage() {
                     required
                     value={formData.birthday}
                     onChange={(e) => setFormData({ ...formData, birthday: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                   />
                 </div>
                 <div>
@@ -208,20 +207,19 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                  className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-3xl font-semibold hover:bg-gray-300 transition-colors"
                 >
                   取消
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+                  className="flex-1 bg-gray-800 text-white py-2 rounded-3xl font-semibold hover:bg-gray-700 transition-colors"
                 >
                   保存
                 </button>
               </div>
             </form>
           </div>
-        </div>
         </div>
       )}
     </div>

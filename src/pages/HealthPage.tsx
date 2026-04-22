@@ -67,7 +67,7 @@ export default function HealthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-400 to-purple-400 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-20">
       <div className="max-w-md mx-auto px-4 py-8">
         <h1 className="text-4xl font-black text-white drop-shadow-2xl mb-6">健康管理</h1>
 
@@ -118,14 +118,13 @@ export default function HealthPage() {
       {/* 添加记录弹窗 */}
       {showModal && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 p-4 overflow-y-auto"
+          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
           onClick={() => setShowModal(false)}
         >
-          <div className="min-h-screen flex items-center justify-center py-8">
-            <div
-              className="bg-white rounded-2xl p-6 w-full max-w-md"
-              onClick={(e) => e.stopPropagation()}
-            >
+          <div
+            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="text-xl font-bold text-gray-800 mb-4">添加健康记录</h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -136,7 +135,7 @@ export default function HealthPage() {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                   >
                     <option value="vaccine">疫苗接种</option>
                     <option value="checkup">健康体检</option>
@@ -153,7 +152,7 @@ export default function HealthPage() {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                     placeholder="例如：狂犬疫苗"
                   />
                 </div>
@@ -166,7 +165,7 @@ export default function HealthPage() {
                     required
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                   />
                 </div>
                 <div>
@@ -177,7 +176,7 @@ export default function HealthPage() {
                     type="date"
                     value={formData.nextDate}
                     onChange={(e) => setFormData({ ...formData, nextDate: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500"
                   />
                 </div>
                 <div>
@@ -187,7 +186,7 @@ export default function HealthPage() {
                   <textarea
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 h-20"
+                    className="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none focus:border-gray-500 h-20"
                     placeholder="记录更多细节..."
                   />
                 </div>
@@ -196,20 +195,19 @@ export default function HealthPage() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                  className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-3xl font-semibold hover:bg-gray-300 transition-colors"
                 >
                   取消
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+                  className="flex-1 bg-gray-800 text-white py-2 rounded-3xl font-semibold hover:bg-gray-700 transition-colors"
                 >
                   保存
                 </button>
               </div>
             </form>
           </div>
-        </div>
         </div>
       )}
     </div>

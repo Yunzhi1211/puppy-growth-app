@@ -36,14 +36,17 @@ export default function ChatPage() {
 
     try {
       // 使用 MiniMax 2.5 AI API
+      console.log('Sending request to AI API...');
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer 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',
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'Puppy Growth App',
         },
         body: JSON.stringify({
-          model: 'minimax2.5',
+          model: 'minimax/minimax-01',
           messages: [
             {
               role: 'system',
@@ -55,11 +58,17 @@ export default function ChatPage() {
         }),
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error:', errorText);
         throw new Error('API请求失败');
       }
 
       const data = await response.json();
+      console.log('API Response:', data);
+
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -68,6 +77,7 @@ export default function ChatPage() {
       };
       setMessages((prev) => [...prev, aiResponse]);
     } catch (error) {
+      console.error('Chat error:', error);
       // 如果API失败，使用本地智能回复
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -109,7 +119,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 pb-20 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-20 flex flex-col">
       <div className="max-w-md mx-auto w-full flex-1 flex flex-col">
         {/* 头部 */}
         <div className="glass border-b-2 border-white/30 px-4 py-5 shadow-2xl">

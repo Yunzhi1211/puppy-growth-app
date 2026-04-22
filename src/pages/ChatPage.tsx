@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { Send, Dog } from 'lucide-react';
 
+interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: string;
+}
+
 export default function ChatPage() {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      role: 'assistant' as const,
+      role: 'assistant',
       content: '汪汪！我是你的虚拟小狗助手，有什么想问我的吗？',
       timestamp: new Date().toISOString(),
     },
@@ -15,9 +22,9 @@ export default function ChatPage() {
   const handleSend = () => {
     if (!input.trim()) return;
 
-    const newMessage = {
+    const newMessage: Message = {
       id: Date.now().toString(),
-      role: 'user' as const,
+      role: 'user',
       content: input,
       timestamp: new Date().toISOString(),
     };
@@ -27,9 +34,9 @@ export default function ChatPage() {
 
     // 模拟AI回复
     setTimeout(() => {
-      const aiResponse = {
+      const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant' as const,
+        role: 'assistant',
         content: '汪汪！这是一个模拟回复，AI功能待接入。',
         timestamp: new Date().toISOString(),
       };

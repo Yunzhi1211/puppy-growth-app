@@ -1,4 +1,4 @@
-import { Pet, GrowthEvent, HealthRecord } from '../types';
+import type { Pet, GrowthEvent, HealthRecord } from '../types';
 
 const STORAGE_KEYS = {
   PET: 'puppy_pet_info',

@@ -1,7 +1,7 @@
 import { Dog } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Pet } from '../types';
+import type { Pet } from '../types';
 import { getPet, savePet } from '../utils/storage';
 
 export default function HomePage() {

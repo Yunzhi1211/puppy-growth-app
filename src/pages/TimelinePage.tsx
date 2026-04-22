@@ -1,6 +1,6 @@
 import { PawPrint, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { GrowthEvent } from '../types';
+import type { GrowthEvent } from '../types';
 import { getEvents, saveEvent } from '../utils/storage';
 
 export default function TimelinePage() {

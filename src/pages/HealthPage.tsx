@@ -1,6 +1,6 @@
 import { Heart, Syringe, Stethoscope, Pill } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { HealthRecord } from '../types';
+import type { HealthRecord } from '../types';
 import { getHealthRecords, saveHealthRecord } from '../utils/storage';
 
 export default function HealthPage() {

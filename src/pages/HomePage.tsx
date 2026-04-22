@@ -1,13 +1,16 @@
-import { Dog } from 'lucide-react';
+import { Dog, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Pet } from '../types';
-import { getPet, savePet } from '../utils/storage';
+import { getPets, getCurrentPet, savePet, deletePet, setCurrentPetId } from '../utils/storage';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [pet, setPet] = useState<Pet | null>(null);
+  const [pets, setPets] = useState<Pet[]>([]);
+  const [currentPet, setCurrentPet] = useState<Pet | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showPetList, setShowPetList] = useState(false);
+  const [editingPet, setEditingPet] = useState<Pet | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     breed: '',
@@ -16,33 +19,68 @@ export default function HomePage() {
   });
 
   useEffect(() => {
-    const savedPet = getPet();
-    if (savedPet) {
-      setPet(savedPet);
-    }
+    loadPets();
   }, []);
+
+  const loadPets = () => {
+    const allPets = getPets();
+    setPets(allPets);
+    const current = getCurrentPet();
+    setCurrentPet(current);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newPet: Pet = {
-      id: pet?.id || Date.now().toString(),
+      id: editingPet?.id || Date.now().toString(),
       ...formData,
     };
     savePet(newPet);
-    setPet(newPet);
+    loadPets();
     setShowModal(false);
+    setEditingPet(null);
+    setFormData({
+      name: '',
+      breed: '',
+      birthday: '',
+      gender: 'male',
+    });
   };
 
-  const openModal = () => {
-    if (pet) {
-      setFormData({
-        name: pet.name,
-        breed: pet.breed,
-        birthday: pet.birthday,
-        gender: pet.gender,
-      });
-    }
+  const openAddModal = () => {
+    setEditingPet(null);
+    setFormData({
+      name: '',
+      breed: '',
+      birthday: '',
+      gender: 'male',
+    });
     setShowModal(true);
+  };
+
+  const openEditModal = (pet: Pet) => {
+    setEditingPet(pet);
+    setFormData({
+      name: pet.name,
+      breed: pet.breed,
+      birthday: pet.birthday,
+      gender: pet.gender,
+    });
+    setShowModal(true);
+    setShowPetList(false);
+  };
+
+  const handleDeletePet = (petId: string) => {
+    if (confirm('确定要删除这只宠物吗？')) {
+      deletePet(petId);
+      loadPets();
+    }
+  };
+
+  const handleSwitchPet = (petId: string) => {
+    setCurrentPetId(petId);
+    loadPets();
+    setShowPetList(false);
   };
 
   return (
@@ -67,18 +105,28 @@ export default function HomePage() {
             </div>
             <div className="flex-1">
               <h2 className="text-3xl font-black text-gray-800 mb-2">
-                {pet ? pet.name : '我的小狗'}
+                {currentPet ? currentPet.name : '我的小狗'}
               </h2>
               <p className="text-gray-600 text-base">
-                {pet ? `${pet.breed} · ${pet.gender === 'male' ? '男孩 🐕' : '女孩 🐕'}` : '点击下方按钮添加你的宠物信息'}
+                {currentPet ? `${currentPet.breed} · ${currentPet.gender === 'male' ? '男孩 🐕' : '女孩 🐕'}` : '点击下方按钮添加你的宠物信息'}
               </p>
             </div>
-            <button
-              onClick={openModal}
-              className="w-full bg-gradient-to-r from-gray-700 to-gray-600 text-white px-6 py-3 rounded-3xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-bold text-lg"
-            >
-              {pet ? '✏️ 编辑信息' : '➕ 添加宠物'}
-            </button>
+            <div className="w-full flex gap-2">
+              <button
+                onClick={openAddModal}
+                className="flex-1 bg-gradient-to-r from-gray-700 to-gray-600 text-white px-6 py-3 rounded-3xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-bold text-lg"
+              >
+                ➕ 添加宠物
+              </button>
+              {pets.length > 0 && (
+                <button
+                  onClick={() => setShowPetList(true)}
+                  className="flex-1 bg-gradient-to-r from-gray-600 to-gray-500 text-white px-6 py-3 rounded-3xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-bold text-lg"
+                >
+                  📋 管理宠物 ({pets.length})
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -133,7 +181,7 @@ export default function HomePage() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl font-bold text-gray-800 mb-4">
-              {pet ? '编辑宠物信息' : '添加宠物信息'}
+              {editingPet ? '编辑宠物信息' : '添加宠物信息'}
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -219,6 +267,65 @@ export default function HomePage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 宠物列表弹窗 */}
+      {showPetList && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowPetList(false)}
+        >
+          <div
+            className="bg-white rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-xl font-bold text-gray-800 mb-4">我的宠物</h2>
+            <div className="space-y-3">
+              {pets.map((pet) => (
+                <div
+                  key={pet.id}
+                  className={`p-4 rounded-3xl border-2 transition-all ${
+                    currentPet?.id === pet.id
+                      ? 'bg-gray-100 border-gray-400'
+                      : 'bg-white border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div
+                      className="flex-1 cursor-pointer"
+                      onClick={() => handleSwitchPet(pet.id)}
+                    >
+                      <h3 className="font-bold text-gray-800 text-lg">{pet.name}</h3>
+                      <p className="text-sm text-gray-600">
+                        {pet.breed} · {pet.gender === 'male' ? '男孩' : '女孩'}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => openEditModal(pet)}
+                        className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        onClick={() => handleDeletePet(pet.id)}
+                        className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full transition-colors"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowPetList(false)}
+              className="w-full mt-4 bg-gray-200 text-gray-800 py-2 rounded-3xl font-semibold hover:bg-gray-300 transition-colors"
+            >
+              关闭
+            </button>
           </div>
         </div>
       )}

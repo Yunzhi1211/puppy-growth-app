@@ -6,6 +6,10 @@
   body {
     @apply antialiased;
   }
+
+  * {
+    border-radius: inherit;
+  }
 }
 
 @layer utilities {
@@ -20,4 +24,17 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
+}
+
+/* 强制所有输入框和按钮使用圆角 */
+input, textarea, select, button {
+  border-radius: 1.5rem !important;
+}
+
+/* 确保弹窗完全居中 */
+.modal-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100vh !important;
 }

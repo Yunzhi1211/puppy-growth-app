@@ -39,7 +39,7 @@ export default function ChatPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'minimax/minimax-01',
+          model: 'glm-4-flash',
           messages: [
             {
               role: 'system',
@@ -54,7 +54,7 @@ export default function ChatPage() {
       const raw = await response.text();
       let data: {
         choices?: { message?: { content?: string } }[];
-        error?: string;
+        error?: string | { message?: string; code?: number; status?: string };
       };
 
       try {
@@ -66,11 +66,33 @@ export default function ChatPage() {
 
       if (!response.ok) {
         console.error('Chat API:', response.status, raw);
-        if (response.status === 500 && data?.error === 'OPENROUTER_API_KEY_MISSING') {
+        if (response.status === 500 && data?.error === 'ZHIPU_API_KEY_MISSING') {
           throw new Error('NO_SERVER_KEY');
         }
         if (response.status === 401 || response.status === 403) {
-          throw new Error('OPENROUTER_AUTH');
+          const apiMsg =
+            typeof data?.error === 'object' && data.error && 'message' in data.error
+              ? String((data.error as { message?: string }).message ?? '')
+              : typeof data?.error === 'string'
+                ? data.error
+                : '';
+          throw new Error(apiMsg ? `API_AUTH|${apiMsg}` : 'API_AUTH');
+        }
+        if (response.status === 429) {
+          const qMsg =
+            typeof data?.error === 'object' && data.error && 'message' in data.error
+              ? String((data.error as { message?: string }).message ?? '')
+                  .split('\n')
+                  .filter(Boolean)[0] ?? ''
+              : '';
+          throw new Error(qMsg ? `API_QUOTA|${qMsg}` : 'API_QUOTA');
+        }
+        if (response.status === 404) {
+          const nMsg =
+            typeof data?.error === 'object' && data.error && 'message' in data.error
+              ? String((data.error as { message?: string }).message ?? '')
+              : '';
+          throw new Error(nMsg ? `API_MODEL_404|${nMsg}` : 'API_MODEL_404');
         }
         throw new Error('API请求失败');
       }
@@ -90,12 +112,24 @@ export default function ChatPage() {
     } catch (error) {
       console.error('Chat error:', error);
       const code = error instanceof Error ? error.message : '';
+      const apiAuthDetail = code.startsWith('API_AUTH|') ? code.slice('API_AUTH|'.length).trim() : '';
+      const quotaDetail = code.startsWith('API_QUOTA|') ? code.slice('API_QUOTA|'.length).trim() : '';
+      const model404Detail = code.startsWith('API_MODEL_404|')
+        ? code.slice('API_MODEL_404|'.length).trim()
+        : '';
       const hint =
         code === 'NO_SERVER_KEY'
-          ? '【提示】服务端未配置 OpenRouter。请在 Vercel：Project → Settings → Environment Variables 中新增 `OPENROUTER_API_KEY`（不要加 VITE_ 前缀），值为 https://openrouter.ai/keys 的密钥，保存后重新 Deploy。\n\n'
-          : code === 'OPENROUTER_AUTH'
-            ? '【提示】OpenRouter 拒绝访问（密钥无效或已撤销）。请在 Vercel 中核对 `OPENROUTER_API_KEY`，更新后重新部署。以下为本地参考回复：\n\n'
-            : '【提示】云端 AI 暂不可用（本地请用 `npx vercel dev` 以启用 /api）。已使用本地参考回复。\n\n';
+          ? '【提示】未读到智谱密钥。请在 **`puppy-growth-app/.env.local`**（与 `package.json` 同级）添加：`ZHIPU_API_KEY=你的APIKey`，保存后 **Ctrl+C 再 `npm run dev`**。密钥在 https://open.bigmodel.cn/ 控制台创建。也可用变量名 `BIGMODEL_API_KEY`。\n\n'
+          : code === 'API_AUTH' || apiAuthDetail
+            ? `【提示】智谱拒绝了本次请求（401/403）。${apiAuthDetail ? `说明：${apiAuthDetail}\n` : ''}` +
+              '请到 https://open.bigmodel.cn/ 核对 API Key 是否有效、是否过期，以及账户是否有可用额度。\n\n以下为本地参考回复：\n\n'
+            : code === 'API_QUOTA' || quotaDetail
+              ? `【提示】智谱返回 429（额度或频率限制）。${quotaDetail ? `摘要：${quotaDetail}\n` : ''}` +
+                '请稍后再试，或在控制台查看配额/计费；可在 `.env.local` 尝试换轻量模型 `ZHIPU_MODEL=glm-4-flash`（以官网当前可用名为准）。\n\n以下为本地参考回复：\n\n'
+              : code === 'API_MODEL_404' || model404Detail
+                ? `【提示】当前模型不可用（404）。${model404Detail ? `详情：${model404Detail}\n` : ''}` +
+                  '请在 https://open.bigmodel.cn/ 文档或控制台查看当前模型列表，在 `.env.local` 设置 `ZHIPU_MODEL=官网列出的模型名`，重启 dev。\n\n以下为本地参考回复：\n\n'
+                : '【提示】云端 AI 暂不可用，已使用本地参考回复。\n\n';
 
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),

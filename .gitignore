@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Go CLI binaries
+cli/petctl
+cli/petctl.exe
+cli/bin/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
